@@ -2,13 +2,21 @@ import json
 import requests
 from geopy import distance
 import folium
+import os
+from dotenv import load_dotenv
+
+
+load_dotenv()
+
+
+APIKEY = os.getenv('APIKEY')
 
 
 def fetch_coordinates(apikey, address):
     base_url = "https://geocode-maps.yandex.ru/1.x"
     response = requests.get(base_url, params={
         "geocode": address,
-        "apikey": apikey,
+        "apikey": APIKEY,
         "format": "json",
     })
     response.raise_for_status()
@@ -23,7 +31,7 @@ def fetch_coordinates(apikey, address):
 
 
 def load_coffee_data(file_path):
-    with open(file_path, "r") as file:
+    with open(file_path, "r", encoding="CP1251") as file:
         file_contents = file.read()
         return json.loads(file_contents)
 
@@ -73,12 +81,11 @@ def create_map(coord_fetch, capitals):
 
 
 def main():
-    apikey = "c15b6629-2afd-4c50-a5a9-f7d77d87df05"
     place = input()
-    coords = fetch_coordinates(apikey, place)
+    coords = fetch_coordinates(APIKEY, place)
     coord_fetch = coords[::-1]
 
-    coords = fetch_coordinates(apikey, place)
+    coords = fetch_coordinates(APIKEY, place)
 
     capitals = load_coffee_data("coffee.json")
 
