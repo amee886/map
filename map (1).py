@@ -2,14 +2,10 @@ import json
 import requests
 from geopy import distance
 import folium
-import os
-from dotenv import load_dotenv
+from decouple import config
 
 
-load_dotenv()
-
-
-APIKEY = os.getenv('APIKEY')
+APIKEY = config('APIKEY')
 
 
 def fetch_coordinates(apikey, address):
